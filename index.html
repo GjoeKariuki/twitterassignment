@@ -1,0 +1,236 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main-content">
+        <div class="top-nav">
+            <img id='backarrow' src="left-arrow.png" alt="">
+            <div class="profile-name">
+                <h2 id="user-name">                              
+                </h2>
+                <p>32.K Tweets</p>
+            </div>
+            <img style="width:5%; height:5%" src="imagos/quality.png" alt="">
+                    <img style="width:5%; height:5%" src="imagos/diamond.png" alt="">
+            
+        </div>
+        <div class="home-mat">
+            <img id="twitter-png" src="imagos/twitter.png" alt="">
+        </div>
+        <div class="profile">
+            <div class="user-info">
+                <img id="pandas-img" src="imagos/pandas.png" alt="">
+                <div>
+                    <h2 id="user-name"></h2> 
+                    <img style="width:15%; height:35%" src="imagos/quality.png" alt="">
+                    <img style="width:15%; height:35%" src="imagos/diamond.png" alt="">
+                </div>
+                <div>
+                    <h4 id="user-email"></h4>
+                </div>                
+            </div>
+            <div class="profile-icons">
+                <div style="border: 1px solid grey; border-radius: 30%;">
+                    <p>...</p>
+                </div>
+                <div style="border: 1px solid grey; border-radius: 30%;">
+                    <img style="width:40%; height:40%" src="imagos/envelope.jpg" alt="">
+                </div>
+                <div style="border: 1px solid grey; border-radius: 30%;">
+                    <img  style="width:35%; height:35%" src="imagos/bella.png" alt="">
+                </div>
+                <div style="border: 1px solid grey; border-radius: 30%;">
+                    <p>following</p>
+                </div>              
+            </div>
+        </div>
+        <div class="user-intro">
+            <p>Lead Dev Rel <strong>@AlchemyPlatform</strong> <span><img src="imagos/test-tube.png" id="img-logos" alt=""></span>
+                Created <strong>@AlchemyLearn</strong> | npx create-web3-dapp | Developing: Pot <span><img src="imagos/kalanchoe.png" id="img-logos" alt=""></span>
+                | Helping devs break into web3
+            </p>
+            <p>
+                <span>Science & Technology</span>
+                <span>Ethereum</span>
+                <span>vitto.cc</span>
+                <span>Joined August 2020</span>
+            </p>
+            <p>
+                <span><strong>322</strong> following</span>
+                <span><strong>110.8K</strong> followers</span>
+            </p>
+            <p>Followed by Langford Kwabena, Rohit || (<span><img id="img-logos" src="imagos/cardiogram.png" alt="cardiogram"></span>,<span><img style="background-color: rgb(99, 99, 99); height: 5%; width: 5%;" src="imagos/weakness.png" alt=""></span>), and 29 others you follow</p>
+        </div>
+        <div class="user-tweets">
+            <h2>Tweets</h2>
+            <h2>Replies</h2>
+            <h2>Media</h2>
+            <h2>Likes</h2>
+        </div>
+        <hr>
+        <div class="welcome-message">
+            <p>Pinned Tweet</p>
+            <div class="welcome-user">
+                
+                <img id="pandas-img" src="imagos/pandas.png" alt="">
+                <h2 id="user-name"></h2>
+                        <h4 id="user-email"></h4>
+                <div>
+                    <p>
+                        
+                        <h5>.Mar 31</h5>
+                    </p>
+                    <p>We are officially Alchemy verified!</p>
+                    <p>One blue checkmark wasn't enough.</p>              
+                    
+                </div>
+                <div>
+                    <span>...</span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div id="user-posts">
+
+        </div>
+        <div class="mpopup" id="mpopupBox">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2>welcome to comments <section></section></h2>
+                </div>
+                <div class="modal-body">
+                    <h5 id="comment-name"></h5>
+                    <h6 id="comment-email"></h6>
+                    <p id="comment-body"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>          
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+        fetch("users.json")
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                insertUser(data);
+            })
+            .catch((err) =>
+            {
+                console.log(err)
+            });
+        function insertUser(data){
+            const userName = document.querySelector('#user-name')
+            const userEmail = document.querySelector('#user-email')
+            const userIdd = 2
+            for(var i=0; i<data.length; i++){                
+                if(data[i].id == userIdd)
+                {
+                    userName.innerHTML = data[i].name;
+                    userEmail.innerHTML = '@' + data[i].email;
+                }
+            }
+            
+        }
+        fetch('posts.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                appendData(data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        function appendData(data) {
+            const userPosts = document.querySelector("#user-posts")
+            let divia = '';
+           
+            for(let i=0; i<data.length; i++)
+            {                
+                if(data[i].userId === 1)
+                {
+                    divia += `
+                        <div style="margin-bottom:10px;margin-top:10px">
+                            <h3>${data[i].title}</h3>
+                            <p>${data[i].body}</p>                          
+                            <button onclick="displayCommentsModal()" id="showcommentmodal">show comment</button>                                                                           
+                        </div>
+                        <hr>
+                    `
+                    
+                }
+                
+             
+            }
+            userPosts.innerHTML = divia
+            
+        }
+        function displayCommentsModal() {
+            var triggermodal = document.getElementById('showcommentmodal');
+            var popupbox = document.getElementById('mpopupBox');
+            var closeBtn = document.getElementsByClassName('close')[0]
+            
+
+            //open modal 
+            
+            if(triggermodal){
+                popupbox.style.display = 'block';
+                
+                    
+            }
+            closeBtn.onclick = () => {
+                popupbox.style.display = 'none'
+                checker = false
+            };
+            // close when clicked outside
+            window.onclick = (event) => {
+                if(event.target == popupbox){
+                    popupbox.style.display = 'none'
+                    checker = false
+                }
+            };
+        }
+        fetch('comments.json')
+                    .then((response) => {
+                        response.json()
+                    })
+                    .then((data) => {
+                        console.log(data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    });
+        function displayPostComments(data) {            
+            let commentsbody = document.getElementsByClassName('modal-body')
+            let commentName = document.querySelector('#comment-name')
+            let commentEmail = document.querySelector('#comment-email')
+            let commentBody = document.querySelector('#comment-body')
+            for(let i=0; i<data.length; i++) {
+                if (data[i].postId === 1)
+                {
+                    // commentName.innerHTML = commentsdata[i].name;
+                    // commentEmail.innerHTML = commentsdata[i].email
+                    // commentBody.innerHTML = commentsdata[i].body
+                    // commentsbody.appendChild(commentName)
+                    // commentsbody.appendChild(commentEmail)
+                    // commentsbody.appendChild(commentBody)
+                    console.log("debugging")
+                }
+                console.log("debugging")
+            }
+        }            
+       
+    </script>
+</body>
+</html>
